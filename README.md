@@ -1,186 +1,176 @@
-# Programming-Fundamental-Project-GUI-Tiles-Game-
-rn 0; }
+# GUI Tiles Game – 15 Puzzle Game
 
-***Perfectly Running GUI Tiles Game in Dev-CPP IDE by installing the graphics library***
+A graphical 15 Puzzle Game developed in C++ using the BGI Graphics Library as a Programming Fundamentals (PF) project. The game consists of numbered tiles arranged in a 4x4 grid with one empty space. Players use keyboard controls to move tiles and arrange them in the correct numerical order.
 
-#include <graphics.h>
-#include <conio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <stdio.h>
-#include <stdbool.h> 
+---
 
-// Initializing of every thing used in code
-int board[4][4];
-int blankrow = 3, blankcolumn = 3;
-int tilesize = 100;
-int shiftX = 50;
-int shiftY = 90; 
-int move_counter = 0; 
+# Project Overview
 
-void movetile(int r, int c) {
-    int temp = board[r][c];
-    board[r][c] = 0;
-    board[blankrow][blankcolumn] = temp;
-    
-    blankrow = r; 
-    blankcolumn = c;
-    move_counter++; 
-}
+The project demonstrates the implementation of:
 
-bool Solved() {
-    int expected = 1;
-    for (int r = 0; r < 4; r++) {
-        for (int c = 0; c < 4; c++) {
-            if (r == 3 && c == 3) {
-                return board[r][c] == 0; 
-            }
-            if (board[r][c] != expected) return false;
-            expected++;
-        }
-    }
-    return false;
-}
+* 2D arrays
+* Functions
+* Conditional statements
+* Loops
+* Graphics programming
+* Randomization and shuffling
+* Game logic handling
+* User interaction through keyboard controls
 
-void drawBoard() {
-    cleardevice();
-    
-    // Display Move Counter which would count every move of the user when W/A/S/D keys would pressed
-    char Moves_Msg[50];
-    sprintf(Moves_Msg, "Moves: %d", move_counter);
-    setcolor(WHITE);
-    settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
-    outtextxy(shiftX, 10, (char*)Moves_Msg);
-    
-    // Display WASD Controls and its applications so that every move would be properly done by user
-    char Controls_Msg[100];
-    sprintf(Controls_Msg, "W=UP | S=DOWN | A=LEFT | D=RIGHT | X=EXIT");
-    setcolor(YELLOW); 
-    settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
-    outtextxy(shiftX, 45, (char*)Controls_Msg);
+The game includes a graphical board, move counter, tile coloring system, puzzle completion checking, and restart functionality.
 
-    // Draw the Board in which the numerical 15 tiles game would be held respectively
-    for (int r = 0; r < 4; r++) {
-        for (int c = 0; c < 4; c++) {
-            int x1 = shiftX + c * tilesize;
-            int y1 = shiftY + r * tilesize;
-            int x2 = x1 + tilesize;
-            int y2 = y1 + tilesize;
-            
-            int expectedValue = r * 4 + c + 1;
-            
-            // Set tile colors based on correct place of every number and if it is not placed at correct place then tiles would be of two colors
-            if (board[r][c] == 0) {
-                setfillstyle(SOLID_FILL, BLACK); 
-            } 
-            else if (board[r][c] == expectedValue) {
-                setfillstyle(SOLID_FILL, GREEN); 
-            } else {
-                setfillstyle(SOLID_FILL, BLUE); 
-            }
-            
-            bar(x1, y1, x2, y2);
-            setcolor(WHITE);
-            rectangle(x1, y1, x2, y2);
+---
 
-            if (board[r][c] != 0) {
-                char num[4];
-                sprintf(num, "%d", board[r][c]);
-                settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
-                
-                setcolor(WHITE); 
-                
-                int tw = textwidth(num);
-                int th = textheight(num);
-                outtextxy(x1 + (tilesize - tw)/2, y1 + (tilesize - th)/2, num);
-            }
-        }
-    }
-}
+# Features
 
-// Function to randomize the board state so that every time user plays so the tiles would be shuffled accordingly so unique randomization of numbers 
-void shuffleBoard() {
-    int init = 1;
-    int array[16]; 
+* Interactive GUI using graphics.h
+* 4x4 sliding puzzle board
+* Randomized tile shuffling
+* Move counter tracking
+* Keyboard-based controls (W/A/S/D)
+* Automatic puzzle completion detection
+* Restart and exit options
+* Color indication for correctly placed tiles
 
-    // 1. Initialize the 1D array with values 1 to 15, and 0 at the end which is blank box so that movement tiles could occur
-    for (int i = 0; i < 15; i++) {
-        array[i] = init++; 
-    }
-    array[15] = 0; 
-    
-    // 2. Perform shuffle (random swapping of numerical tile numbers)
-    srand(time(0));
-    for (int i = 15; i > 0; i--) {
-        int j = rand() % (i + 1); 
-        int temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
+---
 
-    // 3. Convert the shuffled 1D array back to the 2D board so that tiles would be at 4x4 matrix
-    for (int r = 0; r < 4; r++) {
-        for (int c = 0; c < 4; c++) {
-            board[r][c] = array[r * 4 + c];
-            
-            if (board[r][c] == 0) {
-                blankrow = r; 
-                blankcolumn = c;
-            }
-        }
-    }
-    
-    move_counter = 0; 
-}
+# Technologies Used
 
-int main() {
-    int gd = DETECT, gm;
-    
-    initgraph(&gd, &gm, (char*)"");
+* Language: C++
+* Graphics Library: BGI Graphics Library (`graphics.h`)
+* Compiler: Turbo C++ / Dev C++ with WinBGIm
+* Concepts Used:
 
-    shuffleBoard();
+  * Arrays
+  * Functions
+  * Boolean Logic
+  * Random Number Generation
+  * GUI Programming
 
-    while (true) {
-        drawBoard();
-		// Checking off the grid that the numbers are plotted at right places and prompt suitable message when whole game completes
-        if (Solved()) {
-            setcolor(YELLOW);
-            settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
-            
-            char finalMsg[100];
-            sprintf(finalMsg, "PUZZLE COMPLETED in %d MOVES!", move_counter);
-            outtextxy(shiftX, shiftY + 450, (char*)finalMsg);
-            
-            outtextxy(shiftX, shiftY + 500, (char*)"Press R/r to Restart or X/x to Exit");
-            
-            char choice = getch();
-            if (choice == 'r' || choice == 'R') {
-                shuffleBoard();
-                continue;
-            } else if (choice == 'x' || choice == 'X') {
-                break;
-            }
-        }
+---
 
-        char ch = getch();
-        
-        if (ch == 'x' || ch == 'X') break;
-        
-        // Movement Logic and seeing which key is typed and then perform functions accordingly
-        if ((ch == 'w' || ch == 'W') && blankrow < 3) {
-            movetile(blankrow + 1, blankcolumn);
-        }
-        else if ((ch == 's' || ch == 'S') && blankrow > 0) {
-            movetile(blankrow - 1, blankcolumn);
-        }
-        else if ((ch == 'a' || ch == 'A') && blankcolumn < 3) {
-            movetile(blankrow, blankcolumn + 1);
-        }
-        else if ((ch == 'd' || ch == 'D') && blankcolumn > 0) {
-            movetile(blankrow, blankcolumn - 1);
-        }
-    }
+# Game Controls
 
-    closegraph();
-    return 0;
-}
+| Key | Function        |
+| --- | --------------- |
+| W   | Move Tile Up    |
+| S   | Move Tile Down  |
+| A   | Move Tile Left  |
+| D   | Move Tile Right |
+| R   | Restart Game    |
+| X   | Exit Game       |
+
+---
+
+# Game Logic
+
+## Tile Movement
+
+The blank tile swaps its position with adjacent numbered tiles depending on the key pressed by the player.
+
+## Puzzle Completion
+
+The game continuously checks whether all tiles are arranged in ascending order from 1 to 15.
+
+## Tile Colors
+
+* Green Tile → Correct Position
+* Blue Tile → Incorrect Position
+* Black Tile → Empty Space
+
+---
+
+# Project Structure
+
+```bash
+GUI-Tiles-Game/
+│── main.cpp             # Complete source code
+│── README.md            # Project documentation
+│── screenshots/         # Gameplay screenshots
+```
+
+---
+
+# Installation and Setup
+
+## Requirements
+
+* C++ Compiler
+* graphics.h Library
+* WinBGIm setup (if using Dev C++)
+
+## Compile and Run
+
+```bash
+g++ main.cpp -o game -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32
+```
+
+Run the executable after successful compilation.
+
+---
+
+# How to Play
+
+1. Start the game.
+2. Observe the shuffled numbered tiles.
+3. Use W, A, S, and D keys to move tiles.
+4. Arrange the numbers from 1 to 15 in correct order.
+5. Complete the puzzle in minimum moves.
+
+---
+
+# Functions Used
+
+| Function         | Purpose                         |
+| ---------------- | ------------------------------- |
+| `movetile()`     | Moves tile into blank position  |
+| `Solved()`       | Checks whether puzzle is solved |
+| `drawBoard()`    | Draws complete game interface   |
+| `shuffleBoard()` | Randomizes tile positions       |
+
+---
+
+# Screenshots
+
+Add gameplay screenshots here.
+
+```markdown
+![Gameplay](screenshots/gameplay.png)
+```
+
+---
+
+# Learning Outcomes
+
+This project helped in learning:
+
+* Graphics programming in C++
+* Game development basics
+* Problem-solving techniques
+* Keyboard event handling
+* Matrix manipulation
+* GUI rendering concepts
+* Randomization techniques
+
+---
+
+# Future Improvements
+
+* Add timer system
+* Add difficulty levels
+* Add mouse controls
+* Improve animations
+* Add sound effects
+* Add score saving feature
+
+---
+
+# Contributors
+
+* Abdul Hadi Ahmed
+
+---
+
+# License
+
+This project is created for educational purposes as part of the Programming Fundamentals course
