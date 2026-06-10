@@ -161,13 +161,7 @@ This project helped in learning:
 * Add mouse controls
 * Improve animations
 * Add sound effects
-* Add score saving feature
-
----
-
-# Contributors
-
-* Abdul Hadi Ahmed
+* Add score saving
 
 ---
 
